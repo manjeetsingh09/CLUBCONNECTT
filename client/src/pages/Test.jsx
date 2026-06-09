@@ -18,7 +18,7 @@ const Test = () => {
   useEffect(() => {
     const fetchQuiz = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/tests/quiz/${quizId}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tests/quiz/${quizId}`);
         setQuiz(res.data);
         setTimeLeft(res.data.timeLimit * 60);
       } catch (err) {
@@ -49,7 +49,7 @@ const Test = () => {
     const timeTaken = initialTime - timeLeft;
 
     try {
-      const res = await axios.post(`http://localhost:5000/api/tests/quiz/${quizId}/submit`, { 
+      const res = await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tests/quiz/${quizId}/submit`, { 
         answers, 
         timeTaken 
       });

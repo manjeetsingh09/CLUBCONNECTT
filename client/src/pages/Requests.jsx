@@ -23,7 +23,7 @@ const Requests = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/requests', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/requests`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       setRequests(res.data);
@@ -36,7 +36,7 @@ const Requests = () => {
 
   const handleAction = async (id, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/requests/${id}`, { status }, {
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/requests/${id}`, { status }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       toast.success(`Request ${status.toLowerCase()} successfully`);

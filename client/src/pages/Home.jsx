@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/clubs');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/clubs`);
         setClubs(res.data);
         setFilteredClubs(res.data);
       } catch (err) {

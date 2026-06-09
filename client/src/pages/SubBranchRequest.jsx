@@ -24,7 +24,7 @@ const SubBranchRequest = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://localhost:5000/api/requests', { ...formData, clubId }, {
+      await axios.post(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/requests`, { ...formData, clubId }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       toast.success(`${formData.type === 'SUB_BRANCH' ? 'Sub-branch' : 'Collaboration'} request submitted!`);

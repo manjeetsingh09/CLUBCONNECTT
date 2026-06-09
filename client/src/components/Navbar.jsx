@@ -32,7 +32,7 @@ const Navbar = () => {
 
   const fetchNotifications = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/notifications');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/notifications`);
       setNotifications(res.data);
     } catch (err) {
       console.error('Error fetching notifications:', err);
@@ -41,7 +41,7 @@ const Navbar = () => {
 
   const markRead = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/notifications/${id}/read`);
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/notifications/${id}/read`);
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
     } catch (err) {
       console.error('Error marking read:', err);
@@ -50,7 +50,7 @@ const Navbar = () => {
 
   const clearAll = async () => {
     try {
-      await axios.delete('http://localhost:5000/api/notifications');
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/notifications`);
       setNotifications([]);
     } catch (err) {
       console.error('Error clearing notifications:', err);

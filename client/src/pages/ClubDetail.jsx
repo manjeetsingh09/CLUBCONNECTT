@@ -45,9 +45,9 @@ const ClubDetail = () => {
     const fetchClubData = async () => {
       try {
         const [clubRes, quizzesRes, leaderboardRes] = await Promise.all([
-          axios.get(`http://localhost:5000/api/clubs/${id}`),
-          axios.get(`http://localhost:5000/api/tests/club/${id}`),
-          axios.get(`http://localhost:5000/api/tests/club/${id}/leaderboard`)
+          axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/clubs/${id}`),
+          axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tests/club/${id}`),
+          axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tests/club/${id}/leaderboard`)
         ]);
         
         setClub(clubRes.data);
@@ -65,7 +65,7 @@ const ClubDetail = () => {
 
   const handleSaveInventory = async () => {
     try {
-      await axios.put(`http://localhost:5000/api/clubs/${id}/inventory`, { inventory });
+      await axios.put(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/clubs/${id}/inventory`, { inventory });
       setClub(prev => ({ ...prev, inventory }));
       setIsEditingInventory(false);
     } catch (err) {

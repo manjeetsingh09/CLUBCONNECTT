@@ -31,7 +31,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/leaderboard');
+        const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/leaderboard`);
         setData(res.data);
       } catch (err) {
         console.error('Error fetching leaderboard:', err);
