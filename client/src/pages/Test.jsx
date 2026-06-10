@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Timer, ClipboardList, CheckCircle, AlertCircle, ArrowRight, Brain, Briefcase, Zap } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { trackEvent } from '../utils/analytics';
 
 const Test = () => {
   const { quizId } = useParams();
@@ -21,6 +22,7 @@ const Test = () => {
         const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/tests/quiz/${quizId}`);
         setQuiz(res.data);
         setTimeLeft(res.data.timeLimit * 60);
+        trackEvent('Assessment', 'Test Started', 'Coordinator Screening');
       } catch (err) {
         toast.error('Failed to load recruitment test');
         navigate(-1);
@@ -54,6 +56,8 @@ const Test = () => {
         timeTaken 
       });
       setResult(res.data);
+      trackEvent('Assessment', 'Test Completed', 'Coordinator Screening', res.data.score);
+      
       if (res.data.passed) {
         toast.success(`Excellent! You passed with ${res.data.score}%`);
       } else {

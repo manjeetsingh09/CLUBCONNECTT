@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight, Zap, Globe, Shield, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { trackEvent } from '../utils/analytics';
 
 const Home = () => {
   const [clubs, setClubs] = useState([]);
@@ -124,7 +125,12 @@ const Home = () => {
                 placeholder="Search clubs..."
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-violet-500/50 focus:ring-1 focus:ring-violet-500/20 transition-all"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  if (e.target.value.trim() !== '') {
+                    trackEvent('Directory', 'Smart Search Used', e.target.value);
+                  }
+                }}
               />
             </div>
             <select

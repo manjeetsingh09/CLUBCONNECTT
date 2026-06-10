@@ -9,6 +9,7 @@ import {
   ChevronRight, Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { trackEvent } from '../utils/analytics';
 
 const AnimCounter = ({ value, suffix = '' }) => {
   const [count, setCount] = useState(0);
@@ -36,6 +37,16 @@ const Dashboard = () => {
   const level = Math.floor((user.points || 0) / 100);
   const xpInLevel = (user.points || 0) % 100;
   const nextLevelXP = 100;
+
+  // Trigger when a user hits an XP threshold and levels up
+  const handleLevelUp = (newLevel) => {
+    trackEvent('Gamification', 'Level Up', `Reached Level ${newLevel}`, newLevel);
+  };
+
+  // Trigger when a user is awarded a new RBAC role badge
+  const awardBadge = (roleName) => {
+    trackEvent('Gamification', 'Badge Unlocked', roleName);
+  };
 
   useEffect(() => {
     if (socket) {

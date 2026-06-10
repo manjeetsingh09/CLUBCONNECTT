@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Trophy, Zap, Flame, TrendingUp, ArrowUpRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { trackEvent } from '../utils/analytics';
 
 const AnimatedCounter = ({ value, delay = 0 }) => {
   const [count, setCount] = useState(0);
@@ -45,6 +46,10 @@ const Leaderboard = () => {
   const maxPoints = data.length > 0 ? data[0].points : 1;
   const topThree = data.slice(0, 3);
   const rest = data.slice(3);
+
+  const handleCollegeClick = (collegeName) => {
+    trackEvent('Leaderboard', 'Viewed College Stats', collegeName);
+  };
 
   if (loading) return (
     <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
@@ -133,7 +138,8 @@ const Leaderboard = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: index * 0.04 }}
-                className={`group flex items-center gap-4 px-6 py-4 hover:bg-zinc-800/40 transition-colors ${isTop3 ? 'bg-zinc-900/40' : ''}`}
+                onClick={() => handleCollegeClick(item.collegeName)}
+                className={`group flex items-center gap-4 px-6 py-4 hover:bg-zinc-800/40 transition-colors cursor-pointer ${isTop3 ? 'bg-zinc-900/40' : ''}`}
               >
                 {/* Rank */}
                 <div className="w-8 text-center shrink-0">
