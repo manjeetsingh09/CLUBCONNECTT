@@ -1,6 +1,26 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import ReactGA from 'react-ga4';
 import { AuthProvider, useAuth } from './context/AuthContext';
+
+const TRACKING_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+if (TRACKING_ID) {
+  ReactGA.initialize(TRACKING_ID);
+}
+
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    ReactGA.send({ 
+      hitType: "pageview", 
+      page: location.pathname + location.search 
+    });
+  }, [location]);
+
+  return null;
+};
+
 import { SocketProvider } from './context/SocketContext';
 import { Toaster } from 'react-hot-toast';
 
@@ -71,6 +91,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-rtu-deep text-rtu-light flex flex-col">
+      <AnalyticsTracker />
       <Navbar />
       <div className="flex flex-1 overflow-hidden">
         {user && <Sidebar />}
